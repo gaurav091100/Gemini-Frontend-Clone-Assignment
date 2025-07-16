@@ -5,7 +5,7 @@ A fully functional, responsive conversational AI chat application built with Rea
 
 ## 🚀 Live Demo
 
-**[View Live Application](https://gemini-frontend-clone-assignment-gfuvid4qc.vercel.app/)**
+**[View Live Application](https://gemini-frontend-clone-assignment-three.vercel.app/)**
 
 ## 📋 Project Overview
 
