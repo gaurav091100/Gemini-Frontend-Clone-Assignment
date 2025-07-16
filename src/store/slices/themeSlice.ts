@@ -5,7 +5,7 @@ interface ThemeState {
 }
 
 const initialState: ThemeState = {
-  isDark: JSON.parse(localStorage.getItem('theme-isDark') || 'false'),
+  isDark: JSON.parse(localStorage.getItem('theme-isDark') || "false"),
 };
 
 const themeSlice = createSlice({

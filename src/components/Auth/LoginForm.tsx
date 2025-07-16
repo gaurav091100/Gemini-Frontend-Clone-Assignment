@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,11 +5,10 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import CountrySelect from './CountrySelect';
 import OtpInput from './OtpInput';
 import { useAuth } from '@/hooks/useAuth';
-import { Bot, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,8 +24,12 @@ const otpSchema = z.object({
 type PhoneFormData = z.infer<typeof phoneSchema>;
 type OtpFormData = z.infer<typeof otpSchema>;
 
-const LoginForm: React.FC = () => {
-  const [step, setStep] = useState<'phone' | 'otp'>('phone');
+interface LoginFormProps {
+  step: 'phone' | 'otp';
+  setStep: React.Dispatch<React.SetStateAction<'phone' | 'otp'>>;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ step, setStep }) => { 
   const [phoneData, setPhoneData] = useState<PhoneFormData | null>(null);
   const [dialCode, setDialCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -89,27 +91,10 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="mx-auto w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mb-4">
-            <Bot className="h-6 w-6 text-white" />
-          </div>
-          <CardTitle className="text-2xl font-bold text-blue-500">
-            Welcome to Gemini Chat
-          </CardTitle>
-          <p className="text-muted-foreground">
-            {step === 'phone' 
-              ? 'Enter your phone number to get started' 
-              : 'Enter the verification code sent to your phone'
-            }
-          </p>
-        </CardHeader>
-        <CardContent>
-          {step === 'phone' ? (
+          step === 'phone' ? (
             <form onSubmit={phoneForm.handleSubmit(onPhoneSubmit)} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="country">Country</Label>
+                <Label htmlFor="country">Country<span className='text-destructive'>*</span></Label>
                 <CountrySelect
                   value={phoneForm.watch('countryCode')}
                   onChange={handleCountryChange}
@@ -122,7 +107,7 @@ const LoginForm: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
+                <Label htmlFor="phone">Phone Number<span className='text-destructive'>*</span></Label>
                 <div className="flex gap-2">
                   <div className="w-20 px-3 py-2 border rounded-md bg-muted text-center text-sm">
                     {dialCode || '+1'}
@@ -144,7 +129,7 @@ const LoginForm: React.FC = () => {
 
               <Button 
                 type="submit" 
-                className="w-full bg-blue-500 hover:from-blue-600 hover:to-purple-700"
+                className="w-full bg-blue-500 hover:bg-blue-600"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -170,6 +155,7 @@ const LoginForm: React.FC = () => {
                 <OtpInput
                   value={otpForm.watch('otp')}
                   onChange={(value) => otpForm.setValue('otp', value)}
+                  error={!!otpForm.formState.errors.otp}
                 />
                 {otpForm.formState.errors.otp && (
                   <p className="text-sm text-destructive">
@@ -184,7 +170,7 @@ const LoginForm: React.FC = () => {
               <div className="space-y-2">
                 <Button 
                   type="submit" 
-                  className="w-full bg-blue-500 hover:from-blue-600 hover:to-purple-700"
+                  className="w-full bg-blue-500 hover:bg-blue-600"
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -207,10 +193,10 @@ const LoginForm: React.FC = () => {
                 </Button>
               </div>
             </form>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+          )
+    //      </CardContent>
+    //   </Card>
+    // </div> 
   );
 };
 

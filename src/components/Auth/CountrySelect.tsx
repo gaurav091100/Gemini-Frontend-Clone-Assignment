@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from 'react';
-import type { Country } from '@/lib/types';
+import React, { useState } from 'react';
 import { ChevronDown, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,6 +8,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Input } from '@/components/ui/input';
+import { useCountries } from '@/hooks/useCountries';
 
 interface CountrySelectProps {
   value: string;
@@ -16,35 +16,9 @@ interface CountrySelectProps {
 }
 
 const CountrySelect: React.FC<CountrySelectProps> = ({ value, onChange }) => {
-  const [countries, setCountries] = useState<Country[]>([]);
+  const { countries, loading, error } = useCountries();
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca2,idd,flag');
-        const data = await response.json();
-        
-        const processedCountries = data
-          .filter((country: Country) => country.idd?.root)
-          .map((country: Country) => ({
-            ...country,
-            dialCode: country.idd.root + (country.idd.suffixes?.[0] || ''),
-          }))
-          .sort((a: any, b: any) => a.name.common.localeCompare(b.name.common));
-        
-        setCountries(processedCountries);
-      } catch (error) {
-        console.error('Failed to fetch countries:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCountries();
-  }, []);
 
   const filteredCountries = countries.filter((country: any) =>
     country.name.common.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -70,7 +44,7 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ value, onChange }) => {
             </span>
           ) : (
             <span className="text-muted-foreground">
-              {loading ? 'Loading...' : 'Select country'}
+              {loading ? 'Loading...' : error ? 'Failed to load' : 'Select country'}
             </span>
           )}
           <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -85,6 +59,7 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ value, onChange }) => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
+              disabled={loading}
             />
           </div>
         </div>
