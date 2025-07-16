@@ -227,17 +227,24 @@ The application is deployed on **Vercel**
 
 **Technologies Used**: React • TypeScript • Redux • React Hook Form + Zod • Tailwind CSS • Vite • shadcn/ui
 
-##  📸 Screenshots
+## 📸 Screenshots
 
-Dekstop View
-![Uploading Screenshot 2025-07-16 184438.png…]()
-<img width="1909" height="899" alt="Screenshot 2025-07-16 184507" src="https://github.com/user-attachments/assets/a9629bb5-c4b0-498c-ada1-f94efad4b543" />
-<img width="1892" height="890" alt="Screenshot 2025-07-16 184543" src="https://github.com/user-attachments/assets/d7f25afc-fac0-41de-9242-bf39922be677" />
-<img width="1889" height="890" alt="Screenshot 2025-07-16 184556" src="https://github.com/user-attachments/assets/c99099f7-d91b-4aa6-a555-7d1a67a83cb3" />
-<img width="634" height="518" alt="Screenshot 2025-07-16 184610" src="https://github.com/user-attachments/assets/67a769f9-9201-45a7-9f74-592fd70d964a" />
-<img width="1892" height="897" alt="Screenshot 2025-07-16 184624" src="https://github.com/user-attachments/assets/9c8b9afb-ee9f-401f-ac74-18e0fd7cbcd3" />
+### 🖥️ Desktop View
 
-Mobile View
-<img width="438" height="788" alt="Screenshot 2025-07-16 190644" src="https://github.com/user-attachments/assets/5ad80d19-924e-47a4-88ff-e1b1609c1b9f" />
-<img width="441" height="787" alt="Screenshot 2025-07-16 190527" src="https://github.com/user-attachments/assets/dc8e2441-8c06-48cd-9189-b58923648b6b" />
-<img width="446" height="794" alt="Screenshot 2025-07-16 190539" src="https://github.com/user-attachments/assets/9589cc38-d3b1-4379-bcea-79126b34c33f" />
+| ![Desktop 1](https://github.com/user-attachments/assets/9248b0ce-7894-4e77-8571-725343b71178) |
+|:--:|
+| ![Desktop 2](https://github.com/user-attachments/assets/a9629bb5-c4b0-498c-ada1-f94efad4b543) |
+| ![Desktop 3](https://github.com/user-attachments/assets/d7f25afc-fac0-41de-9242-bf39922be677) |
+| ![Desktop 4](https://github.com/user-attachments/assets/c99099f7-d91b-4aa6-a555-7d1a67a83cb3) |
+| ![Desktop 5](https://github.com/user-attachments/assets/67a769f9-9201-45a7-9f74-592fd70d964a) |
+| ![Desktop 6](https://github.com/user-attachments/assets/9c8b9afb-ee9f-401f-ac74-18e0fd7cbcd3) |
+
+---
+
+### 📱 Mobile View
+
+| ![Mobile 1](https://github.com/user-attachments/assets/5ad80d19-924e-47a4-88ff-e1b1609c1b9f) |
+|:--:|
+| ![Mobile 2](https://github.com/user-attachments/assets/dc8e2441-8c06-48cd-9189-b58923648b6b) |
+| ![Mobile 3](https://github.com/user-attachments/assets/9589cc38-d3b1-4379-bcea-79126b34c33f) |
+
