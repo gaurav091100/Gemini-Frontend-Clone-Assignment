@@ -14,7 +14,7 @@ const loadFromStorage = () => {
   try {
     const stored = localStorage.getItem('chat-storage');
     if (stored) {
-      const parsed = JSON.parse(stored, (key, value) => {
+      const parsed = JSON.parse(stored, (_key, value) => {
         if (value && typeof value === 'object' && value.__type === 'Date') {
           return new Date(value.value);
         }
@@ -35,7 +35,7 @@ const saveToStorage = (state: ChatState) => {
         chatRooms: state.chatRooms,
         messages: state.messages,
       }
-    }, (key, value) => {
+    }, (_key, value) => {
       if (value instanceof Date) {
         return { __type: 'Date', value: value.toISOString() };
       }
