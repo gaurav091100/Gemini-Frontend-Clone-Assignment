@@ -48,7 +48,9 @@ const OtpInput: React.FC<OtpInputProps> = ({ value, onChange, length = 6, error 
       {Array.from({ length }, (_, index) => (
         <Input
           key={index}
-          ref={(el) => (inputRefs.current[index] = el)}
+          ref={(el) => {
+            inputRefs.current[index] = el;
+          }}
           type="text"
           maxLength={1}
           value={value[index] || ''}
