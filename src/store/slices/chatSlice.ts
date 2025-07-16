@@ -1,6 +1,12 @@
-import { createSlice, type PayloadAction, createSelector } from '@reduxjs/toolkit';
-import type { ChatRoom, Message } from '@/lib/types';
-import {type RootState } from '../store';
+import {
+  createSlice,
+  type PayloadAction,
+  createSelector,
+} from "@reduxjs/toolkit";
+import type { ChatRoom, Message } from "@/lib/types";
+import { type RootState } from "../store";
+import { demoChatRooms } from "@/constants/demoChatRooms";
+import { demoMessages } from "@/constants/demoChatMessages";
 
 interface ChatState {
   chatRooms: ChatRoom[];
@@ -12,10 +18,10 @@ interface ChatState {
 
 const loadFromStorage = () => {
   try {
-    const stored = localStorage.getItem('chat-storage');
+    const stored = localStorage.getItem("chat-storage");
     if (stored) {
       const parsed = JSON.parse(stored, (_key, value) => {
-        if (value && typeof value === 'object' && value.__type === 'Date') {
+        if (value && typeof value === "object" && value.__type === "Date") {
           return new Date(value.value);
         }
         return value;
@@ -23,42 +29,45 @@ const loadFromStorage = () => {
       return parsed.state || { chatRooms: [], messages: [] };
     }
   } catch (error) {
-    console.error('Error loading chat data from storage:', error);
+    console.error("Error loading chat data from storage:", error);
   }
   return { chatRooms: [], messages: [] };
 };
 
 const saveToStorage = (state: ChatState) => {
   try {
-    const serialized = JSON.stringify({
-      state: {
-        chatRooms: state.chatRooms,
-        messages: state.messages,
+    const serialized = JSON.stringify(
+      {
+        state: {
+          chatRooms: state.chatRooms,
+          messages: state.messages,
+        },
+      },
+      (_key, value) => {
+        if (value instanceof Date) {
+          return { __type: "Date", value: value.toISOString() };
+        }
+        return value;
       }
-    }, (_key, value) => {
-      if (value instanceof Date) {
-        return { __type: 'Date', value: value.toISOString() };
-      }
-      return value;
-    });
-    localStorage.setItem('chat-storage', serialized);
+    );
+    localStorage.setItem("chat-storage", serialized);
   } catch (error) {
-    console.error('Error saving chat data to storage:', error);
+    console.error("Error saving chat data to storage:", error);
   }
 };
 
 const storedData = loadFromStorage();
 
 const initialState: ChatState = {
-  chatRooms: storedData.chatRooms || [],
-  messages: storedData.messages || [],
+  chatRooms: storedData.chatRooms?.length ? storedData.chatRooms : [...demoChatRooms],
+  messages: storedData.messages?.length ? storedData.messages : [...demoMessages],
   currentChatRoom: null,
   isTyping: false,
-  searchQuery: '',
+  searchQuery: "",
 };
 
 const chatSlice = createSlice({
-  name: 'chat',
+  name: "chat",
   initialState,
   reducers: {
     addChatRoom: (state, action: PayloadAction<ChatRoom>) => {
@@ -66,8 +75,12 @@ const chatSlice = createSlice({
       saveToStorage(state);
     },
     deleteChatRoom: (state, action: PayloadAction<string>) => {
-      state.chatRooms = state.chatRooms.filter((room) => room.id !== action.payload);
-      state.messages = state.messages.filter((msg) => msg.chatRoomId !== action.payload);
+      state.chatRooms = state.chatRooms.filter(
+        (room) => room.id !== action.payload
+      );
+      state.messages = state.messages.filter(
+        (msg) => msg.chatRoomId !== action.payload
+      );
       if (state.currentChatRoom === action.payload) {
         state.currentChatRoom = null;
       }
@@ -100,7 +113,10 @@ const chatSlice = createSlice({
 
 // Selectors
 export const selectFilteredChatRooms = createSelector(
-  [(state: RootState) => state.chat.chatRooms, (state: RootState) => state.chat.searchQuery],
+  [
+    (state: RootState) => state.chat.chatRooms,
+    (state: RootState) => state.chat.searchQuery,
+  ],
   (chatRooms, searchQuery) => {
     if (!searchQuery) return chatRooms;
     return chatRooms.filter((room) =>
@@ -116,11 +132,18 @@ export const selectChatRoomMessages = (chatRoomId: string) =>
       messages
         .filter((msg) => msg.chatRoomId === chatRoomId)
         .sort(
-  (a, b) =>
-    new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-)
-        // .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+          (a, b) =>
+            new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+        )
+    // .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
   );
 
-export const { addChatRoom, deleteChatRoom, addMessage, setCurrentChatRoom, setTyping, setSearchQuery } = chatSlice.actions;
+export const {
+  addChatRoom,
+  deleteChatRoom,
+  addMessage,
+  setCurrentChatRoom,
+  setTyping,
+  setSearchQuery,
+} = chatSlice.actions;
 export default chatSlice.reducer;
